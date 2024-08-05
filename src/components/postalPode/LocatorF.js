@@ -1,5 +1,8 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import PostalCodeDetails from "./PostalCodeDetails";
+import ErrorMessage from "./ErrorMessage";
+import MapComponent from "./MapComponent";
+// const YOUR_OPENCAGE_API_KEY = "059d06a9d88c40558d2aebf49179cd88";
 
 const LocatorF = () => {
   const [pincode, setPincode] = useState("");
@@ -9,40 +12,38 @@ const LocatorF = () => {
   const [error, setError] = useState("");
   const [name, setName] = useState("");
   const [address, setAddress] = useState("");
-  const [deliveryStatus, setDeliveryStatus] = useState("");
-  const [region, setRegion] = useState("");
   const [division, setDivision] = useState("");
+  const [location, setLocation] = useState(null);
+  const [searchByLocation, setSearchByLocation] = useState({
+    state: "",
+    district: "",
+    place: "",
+  });
 
-  useEffect(() => {
+  const handleSearch = async () => {
     if (pincode.length === 6) {
-      fetchData();
+      // Case 1: Fetch details based on pincode
+      await fetchDataByPincode(pincode);
+    } else if (
+      searchByLocation.state &&
+      searchByLocation.district &&
+      searchByLocation.place
+    ) {
+      // Case 2: Fetch pincode based on state, district, and city
+      await fetchPincodeByLocation(searchByLocation);
     } else {
-      setPlace("");
-      setDistrict("");
-      setState("");
-    }
-  }, []);
-
-  const handleSearch = () => {
-    if (pincode.length === 6) {
-      fetchData(pincode);
-    } else {
-      setError("Pincode must be 6 digits long");
-      setPlace("");
-      setDistrict("");
-      setState("");
+      setError("Please provide valid inputs for search.");
     }
   };
 
-  // Indian PIN codes are 6 digits
-  const fetchData = async () => {
+  const fetchDataByPincode = async (pincode) => {
     try {
       setError("");
       const response = await fetch(
         `https://api.postalpincode.in/pincode/${pincode}`
       );
       const data = await response.json();
-      console.log("API Response:", data); // Debugging line
+      console.log("API Response:", data);
 
       if (data[0].Status === "Success") {
         const postOfficeData = data[0].PostOffice[0];
@@ -51,38 +52,90 @@ const LocatorF = () => {
         setState(postOfficeData.State);
         setAddress(`${postOfficeData.Name}, ${postOfficeData.District}`);
         setName(postOfficeData.Name);
-        setDeliveryStatus(postOfficeData.DeliveryStatus);
-        setRegion(postOfficeData.Region);
         setDivision(postOfficeData.Division);
+
+        // Fetch location data
+        const geoResponse = await fetch(
+          `https://api.opencagedata.com/geocode/v1/json?q=${postOfficeData.Name},${postOfficeData.District},${postOfficeData.State}&key=059d06a9d88c40558d2aebf49179cd88`
+        );
+        const geoData = await geoResponse.json();
+        if (geoData.results.length > 0) {
+          const { lat, lng } = geoData.results[0].geometry;
+          setLocation([lat, lng]);
+        } else {
+          setError("Geolocation not found");
+        }
       } else {
         setError("Invalid pincode or data not found");
-        setPlace("");
-        setDistrict("");
-        setState("");
+        clearLocationData();
       }
     } catch (err) {
       setError("Error fetching data");
-      setPlace("");
-      setDistrict("");
-      setState("");
+      clearLocationData();
     }
   };
 
+  const fetchPincodeByLocation = async ({ state, district, place }) => {
+    try {
+      setError("");
+      const response = await fetch(
+        `https://api.postalpincode.in/postoffice/${place}`
+      );
+      const data = await response.json();
+      console.log("API Response:", data);
+
+      if (data[0].Status === "Success") {
+        const results = data[0].PostOffice.filter(
+          (office) =>
+            office.State.toLowerCase() === state.toLowerCase() &&
+            office.District.toLowerCase() === district.toLowerCase()
+        );
+        if (results.length > 0) {
+          setPincode(results[0].Pincode);
+        } else {
+          setError("No pincode found for the given location");
+        }
+      } else {
+        setError("No data found for the given location");
+      }
+    } catch (err) {
+      setError("Error fetching data");
+    }
+  };
+
+  const clearLocationData = () => {
+    setPlace("");
+    setDistrict("");
+    setState("");
+    setAddress("");
+    setName("");
+    setDivision("");
+    setLocation(null);
+  };
+
   return (
-    <div className="flex flex-col gap-6 mt-9 ml-36 ">
-      <h2 className="text-4xl sm:font-semibold mb-14">
+    <div
+      className="flex flex-col gap-6  p-6 bg-gradient-to-r from-pink-500 via-red-500 to-yellow-500 bg-animated"
+      style={{
+        backgroundImage: `url('https://www.guideoftheworld.com/wp-content/uploads/map/india_geographical_map.jpg')`,
+        backgroundSize: "cover",
+        backgroundPosition: "center",
+        minHeight: "100vh",
+      }}
+    >
+      <h2 className="text-4xl sm:font-semibold mb-14 text-red-700 ">
         Pincode/Post Office Locator
       </h2>
 
-      <div className="rounded-xl border px-8 py-12 flex flex-col justify-between lg:flex-row lg:justify-center lg:items-center mr-28 ">
+      <div className="rounded-xl border ml-20 px-8 py-12 flex flex-col justify-evenly lg:flex-row lg:justify-center lg:items-center mr-28 bg-gradient-to-t from-slate-950 white bg-opacity-90 shadow-lg">
         <div className="flex flex-col gap-6 lg:w-1/2">
           <h2 className="border border-yellow-300 bg-yellow-50 text-yellow-800 w-fit px-3 py-1 rounded-lg font-medium font-display">
             Search & Find Postal Codes of India
           </h2>
 
-          <div className="flex flex-col gap-6 lg:w-1/2 items-center lg:items-start pb-11 mb-11 ">
-            <form className=" flex flex-col gap-1 lg:w-1/2" action="">
-              <label className="text-lg sm:font-semibold m-2 tracking-wide">
+          <div className="flex flex-col gap-6 lg:w-1/2 items-center lg:items-start">
+            <form className="flex flex-col gap-1 lg:w-1/2">
+              <label className="text-lg sm:font-semibold m-2 tracking-wide text-gray-800 text-white font-bold">
                 Pincode
               </label>
               <input
@@ -92,70 +145,92 @@ const LocatorF = () => {
                 onChange={(e) => setPincode(e.target.value)}
                 placeholder="Enter pincode"
               />
-              <label className="text-lg sm:font-semibold m-2">City</label>
+              <label className="text-lg sm:font-semibold m-2 text-white font-bold ">
+                City
+              </label>
               <input
                 className="border border-b-slate-700 rounded-md w-96 py-1 px-4 my-2"
                 type="text"
-                value={place}
-                onChange={(e) => setPlace(e.target.value)}
+                value={searchByLocation.place}
+                onChange={(e) =>
+                  setSearchByLocation({
+                    ...searchByLocation,
+                    place: e.target.value,
+                  })
+                }
                 placeholder="City"
               />
-              <label className="text-lg sm:font-semibold m-2">District</label>
+              <label className="text-lg sm:font-semibold m-2 text-white font-bold">
+                District
+              </label>
               <input
                 className="border border-b-slate-700 rounded-md w-96 py-1 px-4 my-2"
                 type="text"
-                value={district}
-                onChange={(e) => setDistrict(e.target.value)}
+                value={searchByLocation.district}
+                onChange={(e) =>
+                  setSearchByLocation({
+                    ...searchByLocation,
+                    district: e.target.value,
+                  })
+                }
                 placeholder="District"
               />
-              <label className="text-lg sm:font-semibold m-2">State</label>
+              <label className="text-lg sm:font-semibold m-2 text-white font-bold">
+                State
+              </label>
               <input
                 className="border border-b-slate-700 rounded-md w-96 py-1 px-4 my-2"
                 type="text"
-                value={state}
-                onChange={(e) => setState(e.target.value)}
+                value={searchByLocation.state}
+                onChange={(e) =>
+                  setSearchByLocation({
+                    ...searchByLocation,
+                    state: e.target.value,
+                  })
+                }
                 placeholder="State"
               />
             </form>
-            {error && (
-              <p className="text-red-400 text-center font-semibold font-display  font-mono sm:ml-6">
-                {error}
-              </p>
-            )}
-            <div className="w-96 text-white bg-[#d8232a] flex justify-center items-center p-2 rounded-full mt-6 lg:w-full ">
-              <button className="" onClick={handleSearch}>
+
+            <div className="w-96 text-white bg-[#d8232a] flex justify-center items-center p-2 rounded-full mt-6 lg:w-full">
+              <button
+                type="button"
+                className="w-full lg:w-auto"
+                onClick={handleSearch}
+              >
                 Search
               </button>
             </div>
+            {error && <ErrorMessage error={error} />}
           </div>
         </div>
-        {(pincode ||
-          state ||
-          name ||
-          address ||
-          deliveryStatus ||
-          region ||
-          division) &&
-        district ? (
-          <div className="mt-16 flex flex-col justify-center items-center bg-slate-50 rounded-xl shadow-transparent shadow-sm md:ml-11 mr-14 lg:justify-evenly">
+
+        {pincode || state || name || address || division || location ? (
+          <div className="lg:w-1/2 lg:ml-8">
             <PostalCodeDetails
               pincode={pincode}
               state={state}
               district={district}
               name={name}
               address={address}
-              deliveryStatus={deliveryStatus}
-              region={region}
               division={division}
             />
+            {location && (
+              <MapComponent
+                location={location}
+                name={name}
+                district={district}
+                state={state}
+              />
+            )}
           </div>
         ) : (
-          <div className=" flex flex-col gap-6 mt-11 lg:w-1/2 lg:mt-0 ">
+          <div className="flex flex-col gap-6 mt-11 lg:w-1/2 lg:mt-0">
             <h2 className="border border-yellow-300 bg-yellow-50 text-yellow-800 w-fit px-3 py-1 rounded-lg font-medium font-display">
               About Pincode
             </h2>
-            <div className="flex flex-col gap-6 lg:w-1/2 font-light  font-display justify-center items-center lg:items-start">
-              <h3 className="tracking-wider leading-8 lg:leading-6 ">
+            <div className="flex flex-col gap-6 lg:w-98 font-light font-display justify-center items-center lg:items-start">
+              <h3 className="tracking-wider leading-8 lg:leading-6  text-white text-lg font-semibold">
                 A PIN Code in India is a specific code assigned to one or
                 several post office(s) in one geography by the Indian Postal
                 Services to facilitate easy and accurate delivery of posts and

@@ -58,16 +58,27 @@ const HomeLoanCalculator = () => {
         )
       );
 
-      let balance = principalAmount;
+      let balance = monthly * calculatedPayments;
       let monthlyBreakdownData = [];
+      const startDate = new Date();
 
       for (let i = 0; i < calculatedPayments; i++) {
         const interest = balance * calculatedInterest;
         const principalPaid = monthly - interest;
-        balance -= principalPaid;
+        balance -= monthly;
+
+        const paymentDate = new Date(startDate);
+        paymentDate.setMonth(startDate.getMonth() + i);
+        const month = paymentDate.toLocaleString("default", { month: "short" });
+        const year = paymentDate.getFullYear();
+
         monthlyBreakdownData.push({
           principal: formatCurrency(principalPaid.toFixed(2)),
           interest: formatCurrency(interest.toFixed(2)),
+          monthlyPayment: formatCurrency(monthly),
+          balance: formatCurrency(balance > 0 ? balance.toFixed(2) : 0),
+          month,
+          year,
         });
       }
 
@@ -77,7 +88,7 @@ const HomeLoanCalculator = () => {
 
   return (
     <>
-      <h2 className="text-3xl lg:font-serif font-bold my-6  sm:font-semibold mb-14 ml-11">
+      <h2 className="text-2xl lg:font-serif font-bold my-6">
         Home Loan Calculator
       </h2>
       <div className="flex flex-col lg:flex-row justify-center items-center gap-6 p-4 lg:bg-orange-200 m-4 rounded-3xl lg:ml-32 lg:mr-32">
@@ -129,6 +140,7 @@ const HomeLoanCalculator = () => {
           <LoanSummaryTable
             monthlyBreakdown={monthlyBreakdown}
             years={parseInt(years)}
+            totalPayment={totalPayment}
           />
         </div>
       )}

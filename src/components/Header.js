@@ -26,19 +26,31 @@ const Header = () => {
 
   return (
     <div className="sticky top-0 shadow-lg z-20 gap-3 header p-4 bg-blue-500 text-white flex justify-between items-center">
-      <Link to="/" className="text-xl font-bold ml-9">
-        Property Listings
+      <Link to="/">
+        <img
+          className="w-72 rounded-xl px-4 bg-white cursor-pointer hover:w-64"
+          src="
+https://reecocefe1aea.b-cdn.net/wp-content/uploads/2022/09/Reecocefe-Logo.webp.bv.webp?bv_host=reecocefe.in"
+          alt="LOGO"
+        />
       </Link>
+
       <div className="flex justify-between items-center lg:gap-x-12">
         <Link
           to="/calculator"
-          className="text-md font-semibold text-center p-2 font-sans hover:text-black text-opacity-5 -mx-2"
+          className="text-md font-semibold text-center p-2 font-sans hover:text-black text-opacity-5 -mx-2 hover:underline hover:decoration-pink-500 hover:text-xl"
         >
           EMI Caluculator
         </Link>
         <Link
+          to="/budget"
+          className="text-md font-semibold text-center p-2 font-sans hover:text-black text-opacity-5 -mx-2 hover:underline hover:decoration-pink-500 hover:text-xl"
+        >
+          Budget Caluculator
+        </Link>
+        <Link
           to="/pincode"
-          className="text-md font-semibold text-center p-2 font-sans hover:text-black text-opacity-5 mx-2"
+          className="text-md font-semibold text-center p-2 font-sans hover:text-black text-opacity-5 mx-2 hover:underline hover:decoration-pink-500 hover:text-xl"
         >
           Pin code
         </Link>
