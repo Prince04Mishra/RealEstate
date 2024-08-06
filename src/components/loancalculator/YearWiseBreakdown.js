@@ -15,23 +15,37 @@ const YearWiseBreakdown = ({ monthlyBreakdown }) => {
     const doc = new jsPDF();
     const tableColumn = [
       "Month",
-      "Principal (₹)",
-      "Interest (₹)",
-      "Monthly Payment (₹)",
-      "Balance (₹)",
+      "Principal",
+      "Interest",
+      "Monthly Payment",
+      "Balance",
     ];
     const tableRows = [];
 
-    monthlyBreakdown.forEach((payment, index) => {
+    monthlyBreakdown.forEach((payment) => {
       const paymentData = [
-        (index + 1).toString(), // Month
-        payment.principal.replace("₹", ""), // Principal
-        payment.interest.replace("₹", ""), // Interest
-        payment.monthlyPayment.replace("₹", ""), // Monthly Payment
-        payment.balance.replace("₹", ""), // Balance
+        payment.month,
+        payment.principal.replace("₹", ""),
+        payment.interest.replace("₹", ""),
+        payment.monthlyPayment.replace("₹", ""),
+        payment.balance.replace("₹", ""),
       ];
       tableRows.push(paymentData);
     });
+
+    // Calculate the total of the Monthly Payment column
+    const totalMonthlyPayment = monthlyBreakdown.reduce((acc, payment) => {
+      return acc + parseFloat(payment.monthlyPayment.replace(/₹|,/g, ""));
+    }, 0);
+
+    // Add the total balance to the table rows
+    tableRows.push([
+      "",
+      "",
+      "",
+      "Total Balance",
+      `${totalMonthlyPayment.toLocaleString()}`,
+    ]);
 
     doc.autoTable({
       head: [tableColumn],
@@ -83,7 +97,7 @@ const YearWiseBreakdown = ({ monthlyBreakdown }) => {
             <button
               onClick={handlePreviousYear}
               disabled={currentYearIndex === 0}
-              className="bg-blue-500 text-white p-2 rounded-md disabled:bg-gray-300 hover:bg-yellow-500 hover:shadow-lg hover:shadow-blue-500"
+              className="bg-blue-500 text-white p-2 rounded-md disabled:bg-gray-300"
             >
               Previous Year
             </button>
@@ -91,7 +105,7 @@ const YearWiseBreakdown = ({ monthlyBreakdown }) => {
             <button
               onClick={handleNextYear}
               disabled={currentYearIndex === years.length - 1}
-              className="bg-blue-500 text-white p-2 rounded-md disabled:bg-gray-300 hover:bg-yellow-500 hover:shadow-lg hover:shadow-blue-500"
+              className="bg-blue-500 text-white p-2 rounded-md disabled:bg-gray-300"
             >
               Next Year
             </button>
@@ -129,19 +143,39 @@ const YearWiseBreakdown = ({ monthlyBreakdown }) => {
                     </td>
                   </tr>
                 ))}
+                {/* Total Monthly Payment Row */}
+                {/* <tr>
+                  <td
+                    className="border border-gray-300 p-2"
+                    colSpan="4"
+                    style={{ textAlign: "right" }}
+                  >
+                    Total Monthly Payment
+                  </td>
+                  <td className="border border-gray-300 p-2" colSpan="2">
+                    {monthlyBreakdown
+                      .reduce((acc, payment) => {
+                        return (
+                          acc +
+                          parseFloat(payment.monthlyPayment.replace(/₹|,/g, ""))
+                        );
+                      }, 0)
+                      .toLocaleString()}
+                  </td>
+                </tr> */}
               </tbody>
             </table>
           </div>
           <div className="mt-4 flex justify-end space-x-4">
             <button
               onClick={handleDownload}
-              className="bg-blue-500 text-white p-2 rounded-md hover:bg-yellow-500 hover:shadow-lg hover:shadow-blue-500"
+              className="bg-blue-500 text-white p-2 rounded-md"
             >
               Download PDF
             </button>
             <button
               onClick={handlePrint}
-              className="bg-green-500 text-white p-2 rounded-md hover:bg-yellow-500 hover:shadow-lg hover:shadow-blue-500"
+              className="bg-green-500 text-white p-2 rounded-md"
             >
               Print
             </button>

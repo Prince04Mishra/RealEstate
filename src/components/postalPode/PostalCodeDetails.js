@@ -18,7 +18,7 @@ const PostalCodeDetails = ({
 
   return (
     <div className="max-w-xl p-6 my-11">
-      <h2 className=" font-mono text-center p-2 font-bold mb-4 text-2xl text-white underline">
+      <h2 className=" font-mono text-center p-2 font-bold mb-4 text-2xl text-[#0000ee] underline">
         Post Office Details
       </h2>
       <div className="mb-2 text-lg text-white font-sans">

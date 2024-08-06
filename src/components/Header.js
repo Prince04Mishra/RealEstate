@@ -28,7 +28,7 @@ const Header = () => {
     <div className="sticky top-0 shadow-lg z-20 gap-3 header p-4 bg-blue-500 text-white flex justify-between items-center">
       <Link to="/">
         <img
-          className="w-72 rounded-xl px-4 bg-white cursor-pointer hover:w-64"
+          className="w-72 h-14 rounded-xl px-4 bg-white cursor-pointer hover:w-64"
           src="
 https://reecocefe1aea.b-cdn.net/wp-content/uploads/2022/09/Reecocefe-Logo.webp.bv.webp?bv_host=reecocefe.in"
           alt="LOGO"

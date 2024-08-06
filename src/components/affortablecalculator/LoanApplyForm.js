@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import Header from "../Header";
 
 const LoanApplyForm = () => {
   const [isSignInForm, setIsSignInForm] = useState(true);
@@ -9,6 +10,7 @@ const LoanApplyForm = () => {
   };
   return (
     <div>
+      <Header />
       <form
         onSubmit={(e) => e.preventDefault()}
         className=" w-[600px] p-12 bg-black my-36 absolute mx-auto right-0 left-0 text-white rounded-lg opacity-80"

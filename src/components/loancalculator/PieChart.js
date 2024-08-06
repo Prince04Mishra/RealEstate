@@ -19,8 +19,8 @@ const PieChart = ({
       {
         label: "Loan Breakdown",
         data: [principal, totalInterest],
-        backgroundColor: ["#4CAF50", "#FF6384"],
-        hoverBackgroundColor: ["#45A049", "#FF6384"],
+        backgroundColor: ["#016bf8", "#f22c3d"],
+        hoverBackgroundColor: ["#0000ee", "#f22c2d"],
       },
     ],
   };
@@ -28,6 +28,25 @@ const PieChart = ({
   const options = {
     responsive: true,
     maintainAspectRatio: false,
+    plugins: {
+      legend: {
+        labels: {
+          font: {
+            weight: "bold", // Make the labels bold
+            size: 14, // Optional: Adjust font size if needed
+          },
+          color: "#000000",
+        },
+      },
+      tooltip: {
+        callbacks: {
+          label: function (tooltipItem) {
+            // Format the tooltip label
+            return `${tooltipItem.label}: ₹${tooltipItem.raw.toLocaleString()}`;
+          },
+        },
+      },
+    },
   };
 
   return (

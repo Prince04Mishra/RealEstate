@@ -5,6 +5,7 @@ import EmiCalculator from "./components/loancalculator/EmiCalculator";
 import PinCode from "./components/postalPode/PinCode";
 import "./components/style.css";
 import Home from "./components/affortablecalculator/Home";
+import LoanApplyForm from "./components/affortablecalculator/LoanApplyForm";
 
 function App() {
   const appRouter = createBrowserRouter([
@@ -23,6 +24,10 @@ function App() {
     {
       path: "/budget",
       element: <Home />,
+    },
+    {
+      path: "/applyform",
+      element: <LoanApplyForm />,
     },
   ]);
 

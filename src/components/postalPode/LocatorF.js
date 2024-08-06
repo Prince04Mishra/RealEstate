@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import PostalCodeDetails from "./PostalCodeDetails";
 import ErrorMessage from "./ErrorMessage";
 import MapComponent from "./MapComponent";
@@ -19,6 +19,10 @@ const LocatorF = () => {
     district: "",
     place: "",
   });
+
+  useEffect(() => {
+    handleSearch();
+  }, [pincode]);
 
   const handleSearch = async () => {
     if (pincode.length === 6) {
@@ -123,11 +127,11 @@ const LocatorF = () => {
         minHeight: "100vh",
       }}
     >
-      <h2 className="text-4xl sm:font-semibold mb-14 text-red-700 ">
+      <h2 className="text-4xl sm:font-semibold mb-14 text-red-700 text-center lg:text-left lg:ml-11 ">
         Pincode/Post Office Locator
       </h2>
 
-      <div className="rounded-xl border ml-20 px-8 py-12 flex flex-col justify-evenly lg:flex-row lg:justify-center lg:items-center mr-28 bg-gradient-to-t from-slate-950 white bg-opacity-90 shadow-lg">
+      <div className="rounded-xl border ml-20 px-8 py-12 flex flex-col justify-evenly lg:flex-row lg:justify-center lg:items-center mr-28 bg-black bg-opacity-80 shadow-lg">
         <div className="flex flex-col gap-6 lg:w-1/2">
           <h2 className="border border-yellow-300 bg-yellow-50 text-yellow-800 w-fit px-3 py-1 rounded-lg font-medium font-display">
             Search & Find Postal Codes of India
@@ -151,7 +155,7 @@ const LocatorF = () => {
               <input
                 className="border border-b-slate-700 rounded-md w-96 py-1 px-4 my-2"
                 type="text"
-                value={searchByLocation.place}
+                value={searchByLocation.place || place}
                 onChange={(e) =>
                   setSearchByLocation({
                     ...searchByLocation,
@@ -166,7 +170,7 @@ const LocatorF = () => {
               <input
                 className="border border-b-slate-700 rounded-md w-96 py-1 px-4 my-2"
                 type="text"
-                value={searchByLocation.district}
+                value={searchByLocation.district || district}
                 onChange={(e) =>
                   setSearchByLocation({
                     ...searchByLocation,
@@ -181,7 +185,7 @@ const LocatorF = () => {
               <input
                 className="border border-b-slate-700 rounded-md w-96 py-1 px-4 my-2"
                 type="text"
-                value={searchByLocation.state}
+                value={searchByLocation.state || state}
                 onChange={(e) =>
                   setSearchByLocation({
                     ...searchByLocation,
@@ -201,7 +205,6 @@ const LocatorF = () => {
                 Search
               </button>
             </div>
-            {error && <ErrorMessage error={error} />}
           </div>
         </div>
 
