@@ -6,6 +6,7 @@ import PinCode from "./components/postalPode/PinCode";
 import "./components/style.css";
 import Home from "./components/affortablecalculator/Home";
 import LoanApplyForm from "./components/affortablecalculator/LoanApplyForm";
+import MainPage from "./components/reviews/MainPage";
 
 function App() {
   const appRouter = createBrowserRouter([
@@ -28,6 +29,10 @@ function App() {
     {
       path: "/applyform",
       element: <LoanApplyForm />,
+    },
+    {
+      path: "/reviews",
+      element: <MainPage />,
     },
   ]);
 

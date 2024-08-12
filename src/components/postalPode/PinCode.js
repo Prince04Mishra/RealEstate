@@ -1,12 +1,17 @@
 import React from "react";
 import LocatorF from "./LocatorF";
 import Header from "../Header";
+import Sidebar from "../reviews/Sidebar";
 
 const PinCode = () => {
   return (
-    <div>
+    <div className="flex">
       <Header />
-      <LocatorF />
+      <div className="flex-1 mt-24">
+        <Sidebar />
+
+        <LocatorF />
+      </div>
     </div>
   );
 };

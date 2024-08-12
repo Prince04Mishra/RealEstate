@@ -3,7 +3,7 @@ import React from "react";
 const VerifiedFilter = ({ onChange }) => {
   return (
     <div className="mb-4">
-      <label className="block mb-2 font-semibold">Verified</label>
+      <label className="block mb-2 text-xl font-bold">Verified</label>
       <input
         type="checkbox"
         onChange={onChange}

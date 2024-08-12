@@ -3,7 +3,7 @@ import React from "react";
 const PriceRangeFilter = ({ onChange, value, MIN_VAL }) => {
   return (
     <div className="mb-4 relative">
-      <label className="block mb-2 font-semibold">Set Budget</label>
+      <label className="block mb-2 text-xl font-bold">Set Budget</label>
       {/* {showPriceRange &&  */}
 
       <div>
@@ -18,7 +18,7 @@ const PriceRangeFilter = ({ onChange, value, MIN_VAL }) => {
         />
         <div className=" flex justify-between items-center text-md font-bold">
           <label>0</label>
-          <b>{value}</b>
+          <b className="font-normal">{value}</b>
           <label>10 Cr</label>
         </div>
       </div>

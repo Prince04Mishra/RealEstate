@@ -8,7 +8,7 @@ const stepVal = 1;
 
 const GrossIncome = ({ value, onChange }) => {
   return (
-    <div className="w-[1000px] p-1 items-center  ">
+    <div className="w-[900px] p-1 items-center  ">
       <AmoutType
         name={"PaymGross Income (Monthly)"}
         min={MIN_VAL}

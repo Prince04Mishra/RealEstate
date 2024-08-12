@@ -13,7 +13,7 @@ const InterestRate = ({ value, onChange }) => {
   // };
 
   return (
-    <div className="w-[1000px] p-1 items-center  ">
+    <div className="w-[900px] p-1 items-center  ">
       <AmoutType
         name={"Interest Rate (% P.A.)"}
         min={MIN_VAL}

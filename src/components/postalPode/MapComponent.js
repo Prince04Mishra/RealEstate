@@ -11,13 +11,13 @@ L.Icon.Default.mergeOptions({
   shadowUrl: require("leaflet/dist/images/marker-shadow.png"),
 });
 
-const MapComponent = ({ location, name, district, state }) => {
+const MapComponent = ({ location, name, district, state, pincode }) => {
   return (
     <div className=" shadow-red-600 shadow-md">
       <MapContainer
         className="rounded-xl  "
         center={location}
-        zoom={13}
+        zoom={9}
         style={{ height: "300px", width: "100%" }}
       >
         <TileLayer
@@ -26,7 +26,7 @@ const MapComponent = ({ location, name, district, state }) => {
         />
         <Marker position={location}>
           <Popup>
-            {name}, {district}, {state}
+            {name}, {district}, {state}, {pincode}
           </Popup>
         </Marker>
       </MapContainer>

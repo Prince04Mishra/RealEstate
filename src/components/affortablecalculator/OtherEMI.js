@@ -8,7 +8,7 @@ const step = 0.2;
 
 const OtherEMI = ({ value, onChange }) => {
   return (
-    <div className="w-[1000px] p-1 items-center  ">
+    <div className="w-[900px] p-1 items-center  ">
       <AmoutType
         name={"Other EMIs (Monthly)"}
         min={MIN_VAL}

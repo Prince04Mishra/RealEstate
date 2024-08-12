@@ -12,7 +12,7 @@ const Tenure = ({ value, onChange }) => {
   // };
 
   return (
-    <div className="md:w-[1000px] md:p-1  overflow-hidden">
+    <div className="w-[900px] md:p-1  overflow-hidden">
       <AmoutType
         name={"Tenure (Years)"}
         min={MIN_VAL}

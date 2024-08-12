@@ -127,11 +127,11 @@ const LocatorF = () => {
         minHeight: "100vh",
       }}
     >
-      <h2 className="text-4xl sm:font-semibold mb-14 text-red-700 text-center lg:text-left lg:ml-11 ">
+      <h2 className="text-4xl sm:font-semibold mb-14 text-red-700 text-center lg:text-left lg:ml-52 ml-24  ">
         Pincode/Post Office Locator
       </h2>
 
-      <div className="rounded-xl border ml-20 px-8 py-12 flex flex-col justify-evenly lg:flex-row lg:justify-center lg:items-center mr-28 bg-black bg-opacity-80 shadow-lg">
+      <div className="rounded-xl border ml-20 px-8 py-12 flex flex-col justify-evenly lg:flex-row lg:justify-center lg:items-center mr-28 bg-black bg-opacity-80 shadow-lg lg:ml-64">
         <div className="flex flex-col gap-6 lg:w-1/2">
           <h2 className="border border-yellow-300 bg-yellow-50 text-yellow-800 w-fit px-3 py-1 rounded-lg font-medium font-display">
             Search & Find Postal Codes of India
@@ -139,7 +139,7 @@ const LocatorF = () => {
 
           <div className="flex flex-col gap-6 lg:w-1/2 items-center lg:items-start">
             <form className="flex flex-col gap-1 lg:w-1/2">
-              <label className="text-lg sm:font-semibold m-2 tracking-wide text-gray-800 text-white font-bold">
+              <label className="text-lg sm:font-semibold m-2 tracking-wide  text-white font-bold">
                 Pincode
               </label>
               <input
@@ -224,6 +224,7 @@ const LocatorF = () => {
                 name={name}
                 district={district}
                 state={state}
+                pincode={pincode}
               />
             )}
           </div>

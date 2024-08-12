@@ -3,7 +3,7 @@ import React from "react";
 const BHKFilter = ({ onChange }) => {
   return (
     <div className="mb-4">
-      <label className="block mb-2 font-semibold">BHK Type</label>
+      <label className="block mb-2 text-xl font-bold">BHK Type</label>
       <select onChange={onChange} className="p-2 border rounded w-full">
         <option value="">All BHK</option>
         <option value="1 RK">1 RK</option>

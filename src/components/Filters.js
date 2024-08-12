@@ -47,7 +47,7 @@ const Filters = () => {
   };
 
   return (
-    <div className="sticky top-14 border border-b-sky-500 bg-white  p-4 z-10 flex flex-wrap items-center justify-between gap-3 mb-11 rounded md:bg-gradient-to-b from-gray-200">
+    <div className="sticky top-14 border border-b-sky-500   p-4 z-10 flex flex-wrap items-center justify-between gap-3 mb-11 rounded bg-green-400 text-xl font-bold ">
       <PropertyTypeFilter onChange={handlePropertyTypeChange} />
       <BHKFilter onChange={handleBHKChange} />
       <PriceRangeFilter
@@ -64,3 +64,5 @@ const Filters = () => {
 };
 
 export default Filters;
+
+// md:bg-gradient-to-b from-gray-200

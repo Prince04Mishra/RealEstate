@@ -8,7 +8,7 @@ const step = 1;
 
 const DownPAy = ({ onChange, value }) => {
   return (
-    <div className="w-[1000px] p-1 items-center  ">
+    <div className="w-[900px] p-1 items-center  ">
       <AmoutType
         name={"Down Payment"}
         min={MIN_VAL}

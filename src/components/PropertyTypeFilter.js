@@ -3,7 +3,7 @@ import React from "react";
 const PropertyTypeFilter = ({ onChange }) => {
   return (
     <div className="mb-4">
-      <label className="block mb-2 font-semibold">Property Type</label>
+      <label className="block mb-2 text-xl font-bold">Property Type</label>
       <select onChange={onChange} className="p-2 border rounded w-full">
         <option value="">All Types</option>
         <option value="Apartment">Apartment</option>
